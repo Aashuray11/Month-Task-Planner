@@ -52,9 +52,10 @@ function Inner() {
     <div className="space-y-4">
       <Toolbar month={month} setMonth={setMonth} />
       <Filters />
-      <div className="border rounded bg-white" onMouseUp={endGrid}>
-        <Header />
-        <div className="grid grid-cols-7 grid-rows-5 md:grid-rows-6">
+      <div className="border rounded bg-white overflow-x-auto" onMouseUp={endGrid}>
+        <div className="min-w-[700px] md:min-w-0">
+          <Header />
+          <div className="grid grid-cols-7 grid-rows-6">
           {days.map((d, i) => (
             <Day
               key={i}
@@ -71,6 +72,7 @@ function Inner() {
               onPlayVideo={(url: string) => setVideo({ open: true, url })}
             />
           ))}
+          </div>
         </div>
       </div>
       <TaskModal state={modal} onClose={() => setModal({ open: false })} />
@@ -100,8 +102,8 @@ function Toolbar({ month, setMonth }: any) {
 function Header() {
   const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   return (
-    <div className="grid grid-cols-7 text-center text-sm font-medium border-b bg-slate-50">
-      {names.map(n => (<div key={n} className="p-2">{n}</div>))}
+    <div className="grid grid-cols-7 text-center text-xs md:text-sm font-medium border-b bg-slate-50">
+      {names.map(n => (<div key={n} className="p-1 md:p-2">{n}</div>))}
     </div>
   );
 }
@@ -112,11 +114,11 @@ function Day({ date, today, tasks, selection, onSelectStart, onSelectUpdate, onH
   const dayTasks: Task[] = tasks.filter((t: Task) => t.start <= iso && t.end >= iso);
   return (
     <div
-      className={'relative min-h-[96px] border p-1 select-none ' + (isSameDay(date, today) ? 'bg-blue-50 ' : '') + (inSel ? 'ring-2 ring-blue-400 ' : '')}
+      className={'relative min-h-[72px] md:min-h-[112px] border p-1 md:p-2 select-none ' + (isSameDay(date, today) ? 'bg-blue-50 ' : '') + (inSel ? 'ring-2 ring-blue-400 ' : '')}
       onMouseDown={() => onSelectStart(iso)}
       onMouseEnter={() => { onSelectUpdate(iso); onHover(iso); }}
     >
-      <div className="text-xs text-right text-slate-600">{date.getDate()}</div>
+      <div className="text-[10px] md:text-xs text-right text-slate-600">{date.getDate()}</div>
       <div className="mt-1 space-y-1">
         {dayTasks.map(t => (
           <Chip
@@ -140,19 +142,19 @@ function Chip({ task, iso, onClick, onStartMove, onStartResizeStart, onStartResi
   const isEnd = task.end === iso;
   const color = colorOf(task.category);
   return (
-    <div className="group text-xs leading-tight cursor-pointer" title={`${task.name} (${task.start} → ${task.end})`} onMouseDown={(e: any) => { const el = e.target as HTMLElement; if (el.dataset.handle) return; onStartMove(); }}>
-      <div className="px-2 py-1 rounded text-white" style={{ backgroundColor: color, borderTopLeftRadius: isStart ? 6 : 0, borderBottomLeftRadius: isStart ? 6 : 0, borderTopRightRadius: isEnd ? 6 : 0, borderBottomRightRadius: isEnd ? 6 : 0 }}>
-        <div className="flex items-center gap-2">
-          {isStart ? (<span data-handle="start" onMouseDown={(e: any) => { e.stopPropagation(); onStartResizeStart(); }} className="inline-block w-2 h-3 mr-1 rounded-sm bg-white/80 cursor-ew-resize" />) : null}
-          <span className="flex-1" onClick={onClick}>{task.name}</span>
+    <div className="group text-[10px] md:text-xs leading-tight cursor-pointer" title={`${task.name} (${task.start} → ${task.end})`} onMouseDown={(e: any) => { const el = e.target as HTMLElement; if (el.dataset.handle) return; onStartMove(); }}>
+      <div className="px-1.5 md:px-2 py-0.5 md:py-1 rounded text-white" style={{ backgroundColor: color, borderTopLeftRadius: isStart ? 6 : 0, borderBottomLeftRadius: isStart ? 6 : 0, borderTopRightRadius: isEnd ? 6 : 0, borderBottomRightRadius: isEnd ? 6 : 0 }}>
+        <div className="flex items-center gap-1.5 md:gap-2">
+          {isStart ? (<span data-handle="start" onMouseDown={(e: any) => { e.stopPropagation(); onStartResizeStart(); }} className="inline-block w-1.5 h-3 mr-0.5 md:mr-1 rounded-sm bg-white/80 cursor-ew-resize" />) : null}
+          <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap" onClick={onClick}>{task.name}</span>
           {task.videoUrl ? (
             <button
-              className="shrink-0 text-white/90 hover:text-white underline text-[10px] px-1 py-0.5 rounded bg-white/10 border border-white/20"
+              className="shrink-0 text-white/90 hover:text-white underline text-[9px] md:text-[10px] px-1 py-0.5 rounded bg-white/10 border border-white/20"
               title="Play video"
               onClick={(e: any) => { e.stopPropagation(); onPlayVideo(task.videoUrl); }}
             >Play</button>
           ) : null}
-          {isEnd ? (<span data-handle="end" onMouseDown={(e: any) => { e.stopPropagation(); onStartResizeEnd(); }} className="inline-block w-2 h-3 ml-1 rounded-sm bg-white/80 cursor-ew-resize" />) : null}
+          {isEnd ? (<span data-handle="end" onMouseDown={(e: any) => { e.stopPropagation(); onStartResizeEnd(); }} className="inline-block w-1.5 h-3 ml-0.5 md:ml-1 rounded-sm bg-white/80 cursor-ew-resize" />) : null}
         </div>
       </div>
     </div>

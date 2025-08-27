@@ -19,10 +19,10 @@ export function Filters() {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-3 bg-white p-3 border rounded">
+    <div className="flex flex-wrap items-center gap-2 md:gap-3 bg-white p-2 md:p-3 border rounded">
       <div className="flex items-center gap-2">
         {categories.map(c => (
-          <label key={c.key} className="inline-flex items-center gap-1 text-sm">
+          <label key={c.key} className="inline-flex items-center gap-1 text-xs md:text-sm">
             <input
               type="checkbox"
               checked={filters.categories.has(c.key)}
@@ -33,7 +33,7 @@ export function Filters() {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center gap-2 ml-auto text-xs md:text-sm">
         {[0, 1, 2, 3].map(w => (
           <label key={w} className="inline-flex items-center gap-1 text-sm">
             <input
@@ -53,7 +53,7 @@ export function Filters() {
           value={filters.search}
           onChange={e => setFilters({ ...filters, search: e.target.value })}
           placeholder="Search tasks..."
-          className="w-full px-3 py-2 border rounded"
+          className="w-full px-2 md:px-3 py-1.5 md:py-2 border rounded text-sm"
         />
       </div>
     </div>
