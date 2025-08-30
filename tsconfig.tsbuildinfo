@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/shims.d.ts","./src/types.ts","./src/vite-env.d.ts","./src/components/filters.tsx","./src/components/planner.tsx","./src/components/taskmodal.tsx","./src/context/taskcontext.tsx","./src/utils/dateutils.ts"],"version":"5.9.2"}

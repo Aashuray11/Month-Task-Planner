@@ -47,14 +47,21 @@ export function Filters() {
         ))}
       </div>
 
-      <div className="w-full md:w-64">
+      <div className="w-full md:w-72 flex items-center gap-2">
         <input
           type="text"
           value={filters.search}
           onChange={e => setFilters({ ...filters, search: e.target.value })}
-          placeholder="Search tasks..."
+          placeholder="Search name, category, date, video..."
           className="w-full px-2 md:px-3 py-1.5 md:py-2 border rounded text-sm"
         />
+        {filters.search ? (
+          <button
+            className="text-xs px-2 py-1 border rounded"
+            title="Clear search"
+            onClick={() => setFilters({ ...filters, search: '' })}
+          >Clear</button>
+        ) : null}
       </div>
     </div>
   );

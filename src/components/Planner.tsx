@@ -25,7 +25,24 @@ function Inner() {
   const days = useMemo(() => getMonthGrid(month), [month]);
   const visible = useMemo(() => {
     let list = tasks.filter(t => filters.categories.has(t.category));
-    if (filters.search) list = list.filter(t => t.name.toLowerCase().includes(filters.search.toLowerCase()));
+    if (filters.search) {
+      const q = filters.search.trim().toLowerCase();
+      const terms = q.split(/\s+/).filter(Boolean);
+      if (terms.length) {
+        list = list.filter(t => {
+          const hay = [
+            t.name,
+            String(t.category),
+            t.start,
+            t.end,
+            t.videoUrl || '',
+          ]
+            .join(' ')
+            .toLowerCase();
+          return terms.every(term => hay.includes(term));
+        });
+      }
+    }
     if (filters.timeWindowWeeks) {
       const ws = days[0];
       const we = addDays(ws, filters.timeWindowWeeks * 7 - 1);
